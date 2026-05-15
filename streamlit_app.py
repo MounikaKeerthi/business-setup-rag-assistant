@@ -1,9 +1,6 @@
 import streamlit as st
 from src.ingestion.pipeline import build_documents
 
-# -----------------------------
-# PAGE CONFIG
-# -----------------------------
 st.set_page_config(
     page_title="Dubai Business AI Assistant",
     page_icon="🤖",
@@ -13,9 +10,6 @@ st.set_page_config(
 st.title("🤖 Dubai Business Setup AI Assistant")
 st.caption("RAG-powered chatbot for Dubai business consultancy")
 
-# -----------------------------
-# LOAD DATA
-# -----------------------------
 @st.cache_data
 def load_data():
     return build_documents(
@@ -28,9 +22,6 @@ docs = load_data()
 faq_docs = [d for d in docs if d["source"] == "faq"]
 pdf_docs = [d for d in docs if d["source"] == "pdf"]
 
-# -----------------------------
-# SIMPLE RETRIEVAL LOGIC
-# -----------------------------
 def find_answer(query):
     query = query.lower()
 
@@ -40,9 +31,6 @@ def find_answer(query):
 
     return None, "I couldn't find an exact match yet. (Vector DB coming next 🚀)"
 
-# -----------------------------
-# WELCOME MESSAGE
-# -----------------------------
 welcome_message = """
 Marhaba! Welcome to Dubai Business Setup Consultancy 🇦🇪
 
@@ -57,17 +45,11 @@ I'm your AI assistant here to help you with:
 Ask me anything to get started 👇
 """
 
-# -----------------------------
-# SESSION STATE INIT
-# -----------------------------
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": welcome_message}
     ]
 
-# -----------------------------
-# CLEAN WHATSAPP-STYLE RENDERER
-# -----------------------------
 def render_message(role, message):
 
     if role == "user":
@@ -118,15 +100,9 @@ def render_message(role, message):
             unsafe_allow_html=True
         )
 
-# -----------------------------
-# DISPLAY CHAT HISTORY
-# -----------------------------
 for msg in st.session_state.messages:
     render_message(msg["role"], msg["content"])
 
-# -----------------------------
-# USER INPUT
-# -----------------------------
 user_input = st.chat_input("Ask about business setup in Dubai...")
 
 if user_input:
